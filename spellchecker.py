@@ -14,29 +14,34 @@ class SpellChecker:
 
     def handleSentence(self, txtIn, language):
         # pulizia e preparazione dell'input
-        testo_pulito = replaceChars(txtIn)
-        testo_pulito = testo_pulito.lower()
-        parole = testo_pulito.split(" ")
+        clean_text = replaceChars(txtIn)
+        clean_text = clean_text.lower()
+        words = clean_text.split(" ")
+        words = [p for p in words if p != ""] # elimina parole vuote dovute a doppi spazi
 
-        # rimuove stringhe vuote se ci sono doppi spazi
-        parole = [p for p in parole if p != ""]
-        print("Using contains:")
+        # tempo e avvio della ricerca
+        print("Using contains")
 
         start_time = time.time()
 
-        parole_errate = self.multiDict.searchWords(parole, language)
+        # riceviamo TUTTE le parole convertite in oggetti RichWord
+        rich_words_list = self.multiDict.searchWords(words, language)
 
         end_time = time.time()
+        time_elapsed = end_time - start_time
 
-        tempo_impiegato = end_time - start_time
+        #
+        misspelled_words = []
+        for rw in rich_words_list:
+            if not rw.correct:  # attributo correct è False
+                misspelled_words.append(rw)
 
-        # output dei risultati
-        for parola in parole_errate:
-            print(parola)
+        # output
+        for word in misspelled_words:
+            print(word)  # funziona grazie al def __str__ di RichWord
 
-        print(f"Numero di parole errate: {len(parole_errate)}")
-        print(f"Time elapsed {tempo_impiegato}")
-
+        print(f"Numero di parole errate: {len(misspelled_words)}")
+        print(f"Time elapsed: {time_elapsed}")
 
     def printMenu(self):
         print("______________________________\n" +

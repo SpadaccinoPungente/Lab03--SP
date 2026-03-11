@@ -6,19 +6,21 @@ filtrare le parole corrette durante l’esecuzione del programma.
 """
 
 class RichWord:
-    def __init__(self, parola):
-        self._parola = parola # this is a string
-        self._corretta = None #this is a bool
+    def __init__(self, word):
+        self._word = word # this is a string
+        self._correct = None #this is a bool
 
-    @property
-    def corretta(self):
-        # print("getter of parola called" )
-        return self._corretta
+    @property # getter
+    def correct(self):
+        return self._correct
 
-    @corretta.setter
-    def corretta(self, boolValue):
-        # print("setter of parola called" )
-        self._corretta = boolValue
+    @correct.setter # setter
+    def correct(self, bool_value):
+        self._correct = bool_value
+
+    @property # getter
+    def word(self):
+        return self._word
 
     def __str__(self):
-        return self._parola
+        return self._word

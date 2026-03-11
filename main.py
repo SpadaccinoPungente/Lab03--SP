@@ -10,9 +10,9 @@ while running:
 
     txtIn = input()
 
-    input_accettabili = {"1", "2", "3", "4"}
+    acceptable_inputs = {"1", "2", "3", "4"}
 
-    if txtIn not in input_accettabili:
+    if txtIn not in acceptable_inputs:
         print("Scelta non valida, riprova.")
         continue
 

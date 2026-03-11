@@ -13,28 +13,102 @@ import richWord as rw
 class MultiDictionary:
 
     def __init__(self):
-       self.dizionario_italiano = d.Dictionary()
-       self.dizionario_inglese = d.Dictionary()
-       self.dizionario_spagnolo = d.Dictionary()
+        self.dictionary_ita = d.Dictionary()
+        self.dictionary_ita.loadDictionary("resources/Italian.txt")
+
+        self.dictionary_eng = d.Dictionary()
+        self.dictionary_eng.loadDictionary("resources/English.txt")
+
+        self.dictionary_spa = d.Dictionary()
+        self.dictionary_spa.loadDictionary("resources/Spanish.txt")
 
     def printDic(self, language):
         if language == "italian":
-            self.dizionario_italiano.printAll()
+            self.dictionary_ita.printAll()
         elif language == "english":
-            self.dizionario_inglese.printAll()
+            self.dictionary_eng.printAll()
         elif language == "spanish":
-            self.dizionario_spagnolo.printAll()
+            self.dictionary_spa.printAll()
 
     def searchWords(self, words, language):
-        parole_errate = []
-        # dovrà ritornare un lista di parole errate
+        richwords = []
+        selected_dictionary = self.selectDictionary(language)
+
+        for word in words:
+            new_rw = rw.RichWord(word)
+
+            # non esiste .contains() per le liste ma l'operatore in utilizza un __contains__
+            if new_rw.word in selected_dictionary:
+                new_rw.correct = True
+            else:
+                new_rw.correct = False
+
+            richwords.append(new_rw)
+
+        return richwords
 
     # Esercizio 2
 
-    def searchWordLinear(self):
-        pass
+    """
+    Iterare su tutti gli elementi del vocabolario a partire dal primo. La ricerca termina quando viene trovato 
+    l’elemento cercato o si raggiunge l’ultimo, nel caso in cui l’elemento cercato non sia presente nella lista. 
+    """
+    def searchWordLinear(self, words, language):
+        richwords = []
+        selected_dictionary = self.selectDictionary(language)
 
-    def searchWordDichotomic(self):
-        pass
+        for word in words:
+            new_rw = rw.RichWord(word)
+
+            # non esiste .contains() per le liste ma l'operatore in utilizza un __contains__
+            if new_rw.word in selected_dictionary:
+                new_rw.correct = True
+            else:
+                new_rw.correct = False
+
+            richwords.append(new_rw)
+
+        return richwords
+
+    """
+    Sapendo che il vocabolario è ordinato alfabeticamente, l'idea è quella di non iniziare la ricerca dal primo 
+    elemento, ma da quello centrale, cioè a metà del dizionario. 
+    
+    Si confronta questo elemento con quello cercato:
+    - se corrisponde, la ricerca termina indicando che l'elemento è stato trovato 
+    - se è superiore, la ricerca viene ripetuta sugli elementi precedenti (ovvero sulla prima metà del 
+    dizionario), scartando quelli successivi 
+    - se è inferiore, la ricerca viene ripetuta sugli elementi successivi (ovvero sulla seconda metà del 
+    dizionario), scartando quelli precedenti. 
+    
+    Il procedimento viene ripetuto iterativamente fino a quando o si trova l’elemento cercato, o tutti gli elementi 
+    vengono scartati. In quest’ultimo caso la ricerca termina indicando che il valore non è stato trovato. 
+    """
+    def searchWordDichotomic(self, words, language):
+        richwords = []
+        selected_dictionary = self.selectDictionary(language)
+
+        for word in words:
+            new_rw = rw.RichWord(word)
+
+            # non esiste .contains() per le liste ma l'operatore in utilizza un __contains__
+            if new_rw.word in selected_dictionary:
+                new_rw.correct = True
+            else:
+                new_rw.correct = False
+
+            richwords.append(new_rw)
+
+        return richwords
+
+    def selectDictionary(self, language):
+        if language == "italian":
+            selected_dictionary = self.dictionary_ita.dictionary
+        elif language == "english":
+            selected_dictionary = self.dictionary_eng.dictionary
+        elif language == "spanish":
+            selected_dictionary = self.dictionary_spa.dictionary
+        else: raise ValueError(f"Lingua '{language}' non supportata.")
+        return selected_dictionary
 
 
