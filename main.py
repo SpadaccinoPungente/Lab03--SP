@@ -2,31 +2,38 @@ import spellchecker
 
 sc = spellchecker.SpellChecker()
 
-while(True):
+running = True
+
+while running:
+
     sc.printMenu()
 
     txtIn = input()
-    # Add input control here!
 
-    if int(txtIn) == 1:
+    input_accettabili = {"1", "2", "3", "4"}
+
+    if txtIn not in input_accettabili:
+        print("Scelta non valida, riprova.")
+        continue
+
+    if txtIn == "1":
         print("Inserisci la tua frase in Italiano\n")
         txtIn = input()
         sc.handleSentence(txtIn,"italian")
-        continue
 
-    if int(txtIn) == 2:
+    elif txtIn == "2":
         print("Inserisci la tua frase in Inglese\n")
         txtIn = input()
         sc.handleSentence(txtIn,"english")
-        continue
 
-    if int(txtIn) == 3:
+    elif txtIn == "3":
         print("Inserisci la tua frase in Spagnolo\n")
         txtIn = input()
         sc.handleSentence(txtIn,"spanish")
-        continue
 
-    if int(txtIn) == 4:
-        break
+    elif txtIn == "4":
+        print("Ok, termino programma.")
+        running = False
+
 
 
