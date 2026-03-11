@@ -13,35 +13,41 @@ class SpellChecker:
         self.multiDict = md.MultiDictionary()
 
     def handleSentence(self, txtIn, language):
-        # pulizia e preparazione dell'input
+        # pulizia e preparazione
         clean_text = replaceChars(txtIn)
         clean_text = clean_text.lower()
         words = clean_text.split(" ")
-        words = [p for p in words if p != ""] # elimina parole vuote dovute a doppi spazi
+        words = [p for p in words if p != ""]
 
-        # tempo e avvio della ricerca
-        print("Using contains")
-
+        print("Uso contains...")
         start_time = time.time()
+        rich_words_contains = self.multiDict.searchWord(words, language)
+        time_elapsed = time.time() - start_time
+        self.printResults(rich_words_contains, time_elapsed)
 
-        # riceviamo TUTTE le parole convertite in oggetti RichWord
-        rich_words_list = self.multiDict.searchWords(words, language)
+        print("Uso ricerca lineare...")
+        start_time = time.time()
+        rich_words_linear = self.multiDict.searchWordLinear(words, language)
+        time_elapsed = time.time() - start_time
+        self.printResults(rich_words_linear, time_elapsed)
 
-        end_time = time.time()
-        time_elapsed = end_time - start_time
+        print("Uso ricerca dicotomica...")
+        start_time = time.time()
+        rich_words_dichotomic = self.multiDict.searchWordDichotomic(words, language)
+        time_elapsed = time.time() - start_time
+        self.printResults(rich_words_dichotomic, time_elapsed)
 
-        #
-        misspelled_words = []
-        for rw in rich_words_list:
-            if not rw.correct:  # attributo correct è False
-                misspelled_words.append(rw)
+    def printResults(self, rich_words, time_elapsed):
+        misspelled_rws = []
+        for rw in rich_words:
+            if not rw.correct:
+                misspelled_rws.append(rw)
 
-        # output
-        for word in misspelled_words:
-            print(word)  # funziona grazie al def __str__ di RichWord
+        for rw in misspelled_rws:
+            print(rw) # funziona grazie al def __str__ di RichWord!
 
-        print(f"Numero di parole errate: {len(misspelled_words)}")
-        print(f"Time elapsed: {time_elapsed}")
+        print(f"Numero di parole errate: {len(misspelled_rws)}")
+        print(f"Time elapsed: {time_elapsed}\n")
 
     def printMenu(self):
         print("______________________________\n" +

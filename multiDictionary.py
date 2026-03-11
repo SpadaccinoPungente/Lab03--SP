@@ -30,8 +30,8 @@ class MultiDictionary:
         elif language == "spanish":
             self.dictionary_spa.printAll()
 
-    def searchWords(self, words, language):
-        richwords = []
+    def searchWord(self, words, language):
+        rich_words = []
         selected_dictionary = self.selectDictionary(language)
 
         for word in words:
@@ -43,9 +43,10 @@ class MultiDictionary:
             else:
                 new_rw.correct = False
 
-            richwords.append(new_rw)
+            rich_words.append(new_rw)
 
-        return richwords
+        return rich_words
+
 
     # Esercizio 2
 
@@ -54,21 +55,17 @@ class MultiDictionary:
     l’elemento cercato o si raggiunge l’ultimo, nel caso in cui l’elemento cercato non sia presente nella lista. 
     """
     def searchWordLinear(self, words, language):
-        richwords = []
+        rich_words = []
         selected_dictionary = self.selectDictionary(language)
 
         for word in words:
             new_rw = rw.RichWord(word)
 
-            # non esiste .contains() per le liste ma l'operatore in utilizza un __contains__
-            if new_rw.word in selected_dictionary:
-                new_rw.correct = True
-            else:
-                new_rw.correct = False
+            # implementare ricerca lineare
 
-            richwords.append(new_rw)
+            rich_words.append(new_rw)
 
-        return richwords
+        return rich_words
 
     """
     Sapendo che il vocabolario è ordinato alfabeticamente, l'idea è quella di non iniziare la ricerca dal primo 
@@ -85,21 +82,17 @@ class MultiDictionary:
     vengono scartati. In quest’ultimo caso la ricerca termina indicando che il valore non è stato trovato. 
     """
     def searchWordDichotomic(self, words, language):
-        richwords = []
+        rich_words = []
         selected_dictionary = self.selectDictionary(language)
 
         for word in words:
             new_rw = rw.RichWord(word)
 
-            # non esiste .contains() per le liste ma l'operatore in utilizza un __contains__
-            if new_rw.word in selected_dictionary:
-                new_rw.correct = True
-            else:
-                new_rw.correct = False
+            # implementare ricerca dicotomica
 
-            richwords.append(new_rw)
+            rich_words.append(new_rw)
 
-        return richwords
+        return rich_words
 
     def selectDictionary(self, language):
         if language == "italian":
