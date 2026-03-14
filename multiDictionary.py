@@ -36,14 +36,13 @@ class MultiDictionary:
 
         for word in words:
             new_rw = rw.RichWord(word)
+            rich_words.append(new_rw)
 
             # non esiste .contains() per le liste ma l'operatore in utilizza un __contains__
             if new_rw.word in selected_dictionary:
                 new_rw.correct = True
             else:
                 new_rw.correct = False
-
-            rich_words.append(new_rw)
 
         return rich_words
 
@@ -60,10 +59,14 @@ class MultiDictionary:
 
         for word in words:
             new_rw = rw.RichWord(word)
-
-            # implementare ricerca lineare
-
             rich_words.append(new_rw)
+
+            # ricerca lineare
+            new_rw.correct = False # assumiamo che sia errata all'inizio
+            for elem in selected_dictionary:
+                if new_rw.word == elem:
+                    new_rw.correct = True  # trovata!
+                    break  # interrompiamo il ciclo
 
         return rich_words
 
@@ -87,10 +90,32 @@ class MultiDictionary:
 
         for word in words:
             new_rw = rw.RichWord(word)
-
-            # implementare ricerca dicotomica
-
             rich_words.append(new_rw)
+
+            # ricerca dicotomica
+            """
+            ciclo while e tre variabili che fanno da "puntatori" per gli indici della lista:
+                - inizio: parte da 0
+                - fine: parte dalla lunghezza del dizionario meno uno (len(selected_dictionary) - 1)
+                - mezzo: calcolato a ogni iterazione del ciclo.
+            """
+            new_rw.correct = False  # assumiamo che sia errata all'inizio
+
+            start = 0
+            end = len(selected_dictionary) - 1
+            while start <= end:
+
+                middle = (start + end) // 2 # da calcolarsi a ogni iterazione
+
+                if new_rw.word == selected_dictionary[middle]:
+                    new_rw.correct = True  # trovato, termina la ricerca
+                    break
+                elif new_rw.word < selected_dictionary[middle]:
+                    # la parola viene prima alfabeticamente: scartiamo la seconda metà
+                    end = middle - 1
+                else:
+                    # la parola viene dopo alfabeticamente: scartiamo la prima metà
+                    start = middle + 1
 
         return rich_words
 
